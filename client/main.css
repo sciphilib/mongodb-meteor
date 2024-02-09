@@ -1,0 +1,30 @@
+body {
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.form-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-field label {
+    margin-right: 10px;
+}
+
+.form-field input[type="text"],input[type="password"],input[type="email"] {
+    flex-grow: 1;
+    padding: 5px;
+}
+
