@@ -48,9 +48,9 @@ Meteor.methods({
     check(startDate, Date);
     check(endDate, Date);
 
-    // if (!this.userId) {
-    //   throw new Meteor.Error('not-authorized');
-    // }
+      if (!Roles.userIsInRole(this.userId, ['admin', 'editor'])) {
+	  throw new Meteor.Error('not-authorized', 'You do not have permission to perform this action.');
+      }
 
     Visits.insert({
       doctorId,
@@ -64,9 +64,9 @@ Meteor.methods({
   'visits.remove'(visitId) {
     check(visitId, String);
 
-    // if (!this.userId) {
-    //   throw new Meteor.Error('not-authorized');
-    // }
+      if (!Roles.userIsInRole(this.userId, 'admin')) {
+          throw new Meteor.Error('not-authorized', 'You are not authorized to perform this action.');
+      }
 
     Visits.remove(visitId);
   },

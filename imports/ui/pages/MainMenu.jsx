@@ -20,6 +20,7 @@ export const MainMenu = () => {
 		<button onClick={() => navigateTo('/medications')}>Medications</button>
 		<button onClick={() => navigateTo('/procedures')}>Procedures</button>
 		<button onClick={() => navigateTo('/tests')}>Tests</button>
+		<button onClick={() => navigateTo('/users')}>Users</button>
 	    </div>
         </div>
     );

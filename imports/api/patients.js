@@ -20,9 +20,9 @@ Meteor.methods({
 	check(building, String);
 	check(flat, String);
 
-	// if (!this.userId) {
-	//   throw new Meteor.Error('not-authorized');
-	// }
+	if (!Roles.userIsInRole(this.userId, ['admin', 'editor'])) {
+	    throw new Meteor.Error('not-authorized', 'You do not have permission to perform this action.');
+	}
 
 	Patients.insert({
 	    lastName,
@@ -37,6 +37,11 @@ Meteor.methods({
     },
     'patients.remove'(doctorId) {
         check(doctorId, String);
+
+	if (!Roles.userIsInRole(this.userId, 'admin')) {
+            throw new Meteor.Error('not-authorized', 'You are not authorized to perform this action.');
+        }
+	
         Patients.remove(doctorId);
     }
 });

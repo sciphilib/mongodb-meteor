@@ -31,6 +31,10 @@ Meteor.methods({
 	check(office, String);
 	check(cabinet, Number);
 
+	if (!Roles.userIsInRole(this.userId, ['admin', 'editor'])) {
+	    throw new Meteor.Error('not-authorized', 'You do not have permission to perform this action.');
+	}
+
 	Appointments.insert({
 	    doctorId,
 	    weekday,
@@ -43,6 +47,10 @@ Meteor.methods({
 
     'appointments.remove'(appointmentId) {
 	check(appointmentId, String);
+
+	if (!Roles.userIsInRole(this.userId, 'admin')) {
+            throw new Meteor.Error('not-authorized', 'You are not authorized to perform this action.');
+        }
 
 	Appointments.remove(appointmentId);
     },

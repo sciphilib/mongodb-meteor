@@ -10,6 +10,7 @@ import { ProceduresPage } from './pages/ProceduresPage';
 import { TestsPage } from './pages/TestsPage';
 import { VisitsPage } from './pages/VisitsPage';
 import { PatientsPage } from './pages/PatientsPage';
+import { UsersPage } from './pages/UsersPage';
 import { RegisterForm } from './components/RegisterForm';
 import { LoginForm } from './components/LoginForm';
 
@@ -29,6 +30,7 @@ export const App = () => {
 		<Route path="/register" element={<RegisterForm />} />
 		<Route path="/login" element={<LoginForm />} />
 		<Route path="/menu" element={<MainMenu />} />
+		<Route path="/users" element={<UsersPage />} />
             </Routes>
         </Router>
     );

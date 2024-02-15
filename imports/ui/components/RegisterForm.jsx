@@ -20,6 +20,8 @@ export const RegisterForm = () => {
             if (err) {
                 alert(err.reason);
             } else {
+		const userId = Meteor.userId();
+		Roles.addUsersToRoles(userId, ['viewer']);
 		navigateTo('/menu')
                 console.log("User registered successfully!");
             }

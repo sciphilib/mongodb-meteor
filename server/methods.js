@@ -1,28 +1,46 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+import { check } from 'meteor/check';
 
 Meteor.methods({
-    'users.create'(username, password, role) {
-	const userId = Accounts.createUser({username, password});
+    'assignUserRole'(userId, roles) {
+        check(userId, String);
+        check(roles, [String]);
 
-	if (role) {
-	    Roles.addUsersToRoles(userId, [role]);
+        if (!Roles.userIsInRole(this.userId, 'admin')) {
+            throw new Meteor.Error('not-authorized', 'You are not authorized to perform this action.');
+        }
+
+        Roles.addUsersToRoles(userId, roles);
+    },
+
+    'users.updateRole'(userId, newRole) {
+	check(userId, String);
+	check(newRole, String);
+
+	if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+	    throw new Meteor.Error('not-authorized', 'Только администратор может изменять роли.');
 	}
+
+	Roles.addUsersToRoles(userId, newRole);
     },
 
     'users.remove'(userId) {
-	if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
-	    throw new Meteor.Error('not-authorized');
-	}
+        check(userId, String);
 
-	Meteor.users.remove(userId);
-    },
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized', 'You must be logged in to perform this action.');
+        }
 
-    'createNewUser'(userData) {
-        // Проверка данных пользователя, например, с помощью simple-schema
-        // Создание пользователя
-        Accounts.createUser(userData);
+        if (!Roles.userIsInRole(this.userId, 'admin')) {
+            throw new Meteor.Error('not-authorized', 'You do not have permission to perform this action.');
+        }
+
+        if (userId === this.userId) {
+            throw new Meteor.Error('invalid-operation', 'You cannot remove yourself.');
+        }
+
+        Meteor.users.remove(userId);
     },
-    
 });

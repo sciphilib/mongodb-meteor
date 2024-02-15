@@ -13,10 +13,20 @@ if (Meteor.isServer) {
 Meteor.methods({
     'specialties.insert'(name) {
         check(name, String);
+
+	if (!Roles.userIsInRole(this.userId, ['admin', 'editor'])) {
+	    throw new Meteor.Error('not-authorized', 'You do not have permission to perform this action.');
+	}
+	
         Specialties.insert({ name });
     },
     'specialties.remove'(specialtyId) {
         check(specialtyId, String);
+
+	if (!Roles.userIsInRole(this.userId, 'admin')) {
+            throw new Meteor.Error('not-authorized', 'You are not authorized to perform this action.');
+        }
+	
         Specialties.remove(specialtyId);
     }
 });
